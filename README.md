@@ -2,9 +2,9 @@
 
 Hibernate is a powerful ORM, but you need to have control over the executed SQL queries to avoid huge performance problems (N+1 select, silent updates, batch not working, etc...)
 
-SQL comments are a great help in dev, but this tool helps you to count the executed queries by Hibernate in your integrations test.
+You can enable SQL query logging, this is a great help in dev, but this tool helps you to count the executed queries by Hibernate in your integrations test.
 
-It consists of just an Hibernate SQL inspector service and a Spring Test Listener that reads it
+It consists of just an Hibernate SQL inspector service and a Spring Test Listener that reads it (so no proxy around the Datasource)
 
 ## Example
 
