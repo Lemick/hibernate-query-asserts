@@ -32,10 +32,10 @@ It consists of just an Hibernate SQL inspector service and a Spring Test Listene
 - Register the Spring TestListener that will launch the SQL inspection is the annotation is present
 By adding the listener on each of your integration test:
 
-    	@SpringBootTest(webEnvironment = RANDOM_PORT)
+    	@SpringBootTest
     	@TestExecutionListeners(listeners = HibernateStatementCountTestListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
     	class TestDatasourceProxyApplicationTests {
-    	...
+    	   ...
     	}
 	
 Or globally by adding a META-INF/spring.factories file that contains the listener:
