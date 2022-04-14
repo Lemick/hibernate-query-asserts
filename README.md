@@ -24,10 +24,21 @@ It consists of just an Hibernate SQL inspector service and a Spring Test Listene
 ## How to integrate
 - Register the SQL inspector service in the registry, you just need to add this key in your configuration (here for yml):
 
-
-	spring:
-      jpa:
-        properties:
-          hibernate.session_factory.statement_inspector: com.lemick.integration.hibernate.HibernateStatementCountInspector
+	  spring:
+		  jpa:
+		  	properties:
+				hibernate.session_factory.statement_inspector: com.lemick.integration.hibernate.HibernateStatementCountInspector
 
 - Register the Spring TestListener that will launch the SQL inspection is the annotation is present
+By adding the listener on each of your integration test:
+
+    	@SpringBootTest(webEnvironment = RANDOM_PORT)
+    	@TestExecutionListeners(listeners = HibernateStatementCountTestListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
+    	class TestDatasourceProxyApplicationTests {
+    	...
+    	}
+	
+Or globally by adding a META-INF/spring.factories file that contains the listener:
+
+	org.springframework.test.context.TestExecutionListener=com.lemick.integration.spring.HibernateStatementCountTestListener
+
