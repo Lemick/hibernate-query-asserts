@@ -34,7 +34,7 @@ By adding the listener on each of your integration test:
 
     	@SpringBootTest
     	@TestExecutionListeners(listeners = HibernateStatementCountTestListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
-    	class TestDatasourceProxyApplicationTests {
+    	class MySpringBootIntegrationTest {
     	   ...
     	}
 	
