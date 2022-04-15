@@ -3,14 +3,15 @@ package com.lemick.assertions;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HibernateStatementAssertionResults {
+public class HibernateStatementAssertionResults implements HibernateStatementAssertionValidator {
 
-    private List<HibernateStatementAssertionResult> assertionResults;
+    private final List<HibernateStatementAssertionResult> assertionResults;
 
     public HibernateStatementAssertionResults(List<HibernateStatementAssertionResult> statementAssertionResults) {
         this.assertionResults = statementAssertionResults;
     }
 
+    @Override
     public void validate() {
         List<HibernateStatementAssertionResult> assertionsInError = assertionResults.stream()
                 .filter(HibernateStatementAssertionResult::isInError)

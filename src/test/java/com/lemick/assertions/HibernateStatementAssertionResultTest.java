@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HibernateStatementAssertionResultTest {
 
     @Test
-    public void _result_in_error() {
+    public void _isInError_true() {
         HibernateStatementAssertionResult model = new HibernateStatementAssertionResult(SELECT, 0, 1);
 
         assertTrue(model.isInError(), "the result is in error");
@@ -16,9 +16,23 @@ class HibernateStatementAssertionResultTest {
     }
 
     @Test
-    public void _result_not_in_error() {
+    public void _isInError_false() {
         HibernateStatementAssertionResult model = new HibernateStatementAssertionResult(SELECT, 1, 1);
 
         assertFalse(model.isInError(), "the result is not in error");
+    }
+
+    @Test
+    public void _validate_does_not_throw() {
+        HibernateStatementAssertionResult model = new HibernateStatementAssertionResult(SELECT, 1, 1);
+
+        assertDoesNotThrow(model::validate);
+    }
+
+    @Test
+    public void _validate_throws() {
+        HibernateStatementAssertionResult model = new HibernateStatementAssertionResult(SELECT, 2, 1);
+
+        assertThrows(HibernateStatementCountException.class, model::validate);
     }
 }

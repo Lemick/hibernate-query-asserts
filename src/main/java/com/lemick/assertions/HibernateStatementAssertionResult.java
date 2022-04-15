@@ -1,6 +1,6 @@
 package com.lemick.assertions;
 
-public class HibernateStatementAssertionResult {
+public class HibernateStatementAssertionResult implements HibernateStatementAssertionValidator {
 
     public enum StatementType {SELECT, INSERT, UPDATE, DELETE}
 
@@ -20,5 +20,12 @@ public class HibernateStatementAssertionResult {
 
     public String getErrorMessage() {
         return "Expected " + expected + " " + type.name() + " but was " + actual;
+    }
+
+    @Override
+    public void validate() {
+        if (this.isInError()) {
+            throw new HibernateStatementCountException(this.getErrorMessage());
+        }
     }
 }
