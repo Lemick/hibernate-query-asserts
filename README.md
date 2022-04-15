@@ -30,6 +30,24 @@ If the actual count is different, an exception is thrown:
     com.lemick.assertions.HibernateStatementCountException: 
     Expected 2 INSERT but was 1
     Expected 1 DELETE but was 0
+
+You can also use the static methods in your test method, but it's more complex because Hibernate will try to delay the flush of your entities states at the end of your application transaction, 
+
+Here we call flush manually:
+
+    @Test
+    @Transactional
+    void create_two_entities() {
+        BlogPost post_1 = new BlogPost("Post title 1");
+        blogPostRepository.save(post_1);
+        entityManager.flush();
+        assertInsertStatementCount(1);
+
+        BlogPost post_2 = new BlogPost("Post title 2");
+        blogPostRepository.save(post_2);
+        entityManager.flush();
+        assertInsertStatementCount(2);
+    }
     
 ## How to integrate
 - Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
