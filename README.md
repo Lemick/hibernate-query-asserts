@@ -10,54 +10,53 @@ It consists of just an Hibernate SQL inspector service and a Spring Test Listene
 
 ## Example
 
-You just have to add the @AssertSQLStatementCount annotation to your test and it will verify the SQL statements count at the end of the test:
+* You just have to add the @AssertSQLStatementCount annotation to your test and it will verify the SQL statements count at the end of the test:
 
-    @Test
-    @Transactional
-    @AssertSQLStatementCount(deletes = 1, inserts = 2)
-    void remove_one_entity_and_create_two() {
-        blogPostRepository.deleteById(1L);
+
+        @Test
+        @Transactional
+        @AssertSQLStatementCount(deletes = 1, inserts = 2)
+        void remove_one_entity_and_create_two() {
+            blogPostRepository.deleteById(1L);
         
-        BlogPost post_2 = new BlogPost("Post title 2");
-        blogPostRepository.save(post_2);
+            BlogPost post_2 = new BlogPost("Post title 2");
+            blogPostRepository.save(post_2);
 
-        BlogPost post_3 = new BlogPost("Post title 3");
-        blogPostRepository.save(post_3);
-    }
+            BlogPost post_3 = new BlogPost("Post title 3");
+            blogPostRepository.save(post_3);
+        }
 
-If the actual count is different, an exception is thrown:
+    If the actual count is different, an exception is thrown:
+    
+        com.lemick.assertions.HibernateStatementCountException: 
+        Expected 2 INSERT but was 1
+        Expected 1 DELETE but was 0
 
-    com.lemick.assertions.HibernateStatementCountException: 
-    Expected 2 INSERT but was 1
-    Expected 1 DELETE but was 0
+* You can also use the static methods in your test method, but it's more complex because Hibernate [will try to delay the flush](https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/chapters/flushing/Flushing.html) of your entities states at the end of your application transaction, here we call flush manually:
 
-You can also use the static methods in your test method, but it's more complex because Hibernate will try to delay the flush of your entities states at the end of your application transaction, 
-
-Here we call flush manually:
-
-    @Test
-    @Transactional
-    void create_two_entities() {
-        BlogPost post_1 = new BlogPost("Post title 1");
-        blogPostRepository.save(post_1);
-        entityManager.flush();
-        assertInsertStatementCount(1);
-
-        BlogPost post_2 = new BlogPost("Post title 2");
-        blogPostRepository.save(post_2);
-        entityManager.flush();
-        assertInsertStatementCount(2);
-    }
+        @Test
+        @Transactional
+        void create_two_entities() {
+            BlogPost post_1 = new BlogPost("Post title 1");
+            blogPostRepository.save(post_1);
+            entityManager.flush();
+            assertInsertStatementCount(1);
+    
+            BlogPost post_2 = new BlogPost("Post title 2");
+            blogPostRepository.save(post_2);
+            entityManager.flush();
+            assertInsertStatementCount(2);
+        }
     
 ## How to integrate
-- Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
+1. Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
 
-	  spring:
-		  jpa:
-		  	properties:
-				hibernate.session_factory.statement_inspector: com.lemick.integration.hibernate.HibernateStatementCountInspector
+        spring:
+            jpa:
+                properties:
+                    hibernate.session_factory.statement_inspector: com.lemick.integration.hibernate.HibernateStatementCountInspector
 
-- Register the Spring TestListener that will launch the SQL inspection if the annotation is present:
+2. Register the Spring TestListener that will launch the SQL inspection if the annotation is present:
 
     * By adding the listener on each of your integration test: 
 
