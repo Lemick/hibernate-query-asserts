@@ -42,8 +42,11 @@ If the actual count is different, an exception is thrown:
     * By adding the listener on each of your integration test: 
 
     	    @SpringBootTest
-    	    @TestExecutionListeners(listeners = HibernateStatementCountTestListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
-    	    class MySpringBootIntegrationTest {
+            @TestExecutionListeners(
+    	        listeners = HibernateStatementCountTestListener.class, 
+    	        mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS
+    	    )
+    	    class MySpringIntegrationTest {
     	       ...
     	    }
 	
