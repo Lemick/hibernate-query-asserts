@@ -7,19 +7,23 @@ import static com.lemick.assertions.HibernateStatementAssertionResult.StatementT
 
 public class HibernateStatementAssertUtils {
 
-    public static HibernateStatementAssertionResult assertInsertStatementCount(int expectedInsertStatementCount) {
-        return new HibernateStatementAssertionResult(SELECT, HibernateStatementCountInspector.getInsertStatementCount(), expectedInsertStatementCount);
+    public HibernateStatementAssertionResult assertInsertStatementCount(int expectedInsertStatementCount) {
+        return new HibernateStatementAssertionResult(INSERT, HibernateStatementCountInspector.getStatistics().getInsertStatementCount(), expectedInsertStatementCount);
     }
 
-    public static HibernateStatementAssertionResult assertUpdateStatementCount(int expectedUpdateStatementCount) {
-        return new HibernateStatementAssertionResult(UPDATE, HibernateStatementCountInspector.getUpdateStatementCount(), expectedUpdateStatementCount);
+    public HibernateStatementAssertionResult assertUpdateStatementCount(int expectedUpdateStatementCount) {
+        return new HibernateStatementAssertionResult(UPDATE, HibernateStatementCountInspector.getStatistics().getUpdateStatementCount(), expectedUpdateStatementCount);
     }
 
-    public static HibernateStatementAssertionResult assertSelectStatementCount(int expectedSelectStatementCount) {
-        return new HibernateStatementAssertionResult(SELECT, HibernateStatementCountInspector.getSelectStatementCount(), expectedSelectStatementCount);
+    public HibernateStatementAssertionResult assertSelectStatementCount(int expectedSelectStatementCount) {
+        return new HibernateStatementAssertionResult(SELECT, HibernateStatementCountInspector.getStatistics().getSelectStatementCount(), expectedSelectStatementCount);
     }
 
-    public static HibernateStatementAssertionResult assertDeleteStatementCount(int expectedDeleteStatementCount) {
-        return new HibernateStatementAssertionResult(DELETE, HibernateStatementCountInspector.getDeleteStatementCount(), expectedDeleteStatementCount);
+    public HibernateStatementAssertionResult assertDeleteStatementCount(int expectedDeleteStatementCount) {
+        return new HibernateStatementAssertionResult(DELETE, HibernateStatementCountInspector.getStatistics().getDeleteStatementCount(), expectedDeleteStatementCount);
+    }
+
+    public void resetCounts() {
+        HibernateStatementCountInspector.resetStatistics();
     }
 }

@@ -7,8 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.description;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HibernateStatementCountInspectorTest {
@@ -24,26 +23,15 @@ class HibernateStatementCountInspectorTest {
         String actual = model.inspect("SELECT * FROM Post");
 
         assertEquals("SELECT * FROM Post", actual, "output is the same as the input");
-        verify(statementParser, description("parser is called")).parseSqlStatement("SELECT * FROM Post", model);
+        verify(statementParser, description("parser is called")).parseSqlStatement("SELECT * FROM Post", HibernateStatementCountInspector.getStatistics());
     }
 
     @Test
-    public void _notify_increments() {
-        model.notifySelectStatement();
-        model.notifyInsertStatement();
-        model.notifyUpdateStatement();
-        model.notifyDeleteStatement();
+    public void _resetStatistics() {
+        HibernateStatistics beforeStatistics = HibernateStatementCountInspector.getStatistics();
 
-        assertEquals(1, HibernateStatementCountInspector.getSelectStatementCount(), "the count is incremented");
-        assertEquals(1, HibernateStatementCountInspector.getInsertStatementCount(), "the count is incremented");
-        assertEquals(1, HibernateStatementCountInspector.getUpdateStatementCount(), "the count is incremented");
-        assertEquals(1, HibernateStatementCountInspector.getDeleteStatementCount(), "the count is incremented");
+        HibernateStatementCountInspector.resetStatistics();
 
-        HibernateStatementCountInspector.resetCounts();
-
-        assertEquals(0, HibernateStatementCountInspector.getSelectStatementCount(), "the count is reset");
-        assertEquals(0, HibernateStatementCountInspector.getInsertStatementCount(), "the count is reset");
-        assertEquals(0, HibernateStatementCountInspector.getUpdateStatementCount(), "the count is reset");
-        assertEquals(0, HibernateStatementCountInspector.getDeleteStatementCount(), "the count is reset");
+        assertNotSame(beforeStatistics, HibernateStatementCountInspector.getStatistics(), "the statistics has been recreated");
     }
 }

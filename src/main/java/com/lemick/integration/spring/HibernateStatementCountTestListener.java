@@ -4,20 +4,27 @@ package com.lemick.integration.spring;
 import com.lemick.api.AssertSQLStatementCount;
 import com.lemick.assertions.HibernateStatementAssertUtils;
 import com.lemick.assertions.HibernateStatementAssertionResults;
-import com.lemick.integration.hibernate.HibernateStatementCountInspector;
 import org.springframework.core.Ordered;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListener;
 
 import java.util.List;
 
+/**
+ * TODO
+ * Permettre les asserts dans le test
+ * Augmenter les type d'assert (mise en cache, etc...)
+ * Classe Thread-safe
+ */
 public class HibernateStatementCountTestListener implements TestExecutionListener, Ordered {
+
+    private HibernateStatementAssertUtils hibernateStatementAssertUtils = new HibernateStatementAssertUtils();
 
     @Override
     public void beforeTestMethod(TestContext testContext) {
         AssertSQLStatementCount annotation = testContext.getTestMethod().getAnnotation(AssertSQLStatementCount.class);
         if (annotation != null) {
-            HibernateStatementCountInspector.resetCounts();
+            hibernateStatementAssertUtils.resetCounts();
         }
     }
 
@@ -26,10 +33,10 @@ public class HibernateStatementCountTestListener implements TestExecutionListene
         AssertSQLStatementCount annotation = testContext.getTestMethod().getAnnotation(AssertSQLStatementCount.class);
         if (annotation != null) {
             HibernateStatementAssertionResults assertionResults = new HibernateStatementAssertionResults(List.of(
-                    HibernateStatementAssertUtils.assertSelectStatementCount(annotation.selects()),
-                    HibernateStatementAssertUtils.assertUpdateStatementCount(annotation.updates()),
-                    HibernateStatementAssertUtils.assertInsertStatementCount(annotation.inserts()),
-                    HibernateStatementAssertUtils.assertDeleteStatementCount(annotation.deletes())
+                    hibernateStatementAssertUtils.assertSelectStatementCount(annotation.selects()),
+                    hibernateStatementAssertUtils.assertUpdateStatementCount(annotation.updates()),
+                    hibernateStatementAssertUtils.assertInsertStatementCount(annotation.inserts()),
+                    hibernateStatementAssertUtils.assertDeleteStatementCount(annotation.deletes())
             ));
             assertionResults.validate();
         }
