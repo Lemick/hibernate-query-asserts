@@ -2,7 +2,7 @@
 
 Hibernate is a powerful ORM, but you need to have control over the executed SQL queries to avoid huge performance problems (N+1 selects, silent updates, batch insert not working, etc...)
 
-You can enable SQL query logging, this is a great help in dev, but it can varies until production. 
+You can enable SQL query logging, this is a great help in dev, but not in production. 
 
 This tool helps you to count the real executed queries by Hibernate in your integration tests.
 
