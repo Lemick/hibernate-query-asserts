@@ -39,6 +39,6 @@ public class HibernateStatementCountTestListener implements TestExecutionListene
 
     @Override
     public int getOrder() {
-        return Integer.MAX_VALUE;
+        return Integer.MIN_VALUE;
     }
 }
