@@ -22,6 +22,21 @@ class HibernateStatisticsTest {
     }
 
     @Test
+    public void _reset() {
+        model.notifySelectStatement();
+        model.notifyInsertStatement();
+        model.notifyUpdateStatement();
+        model.notifyDeleteStatement();
+
+        model.resetStatistics();
+
+        assertEquals(0, model.getSelectStatementCount(), "the count is reset to 0");
+        assertEquals(0, model.getInsertStatementCount(), "the count is reset to 0");
+        assertEquals(0, model.getUpdateStatementCount(), "the count is reset to 0");
+        assertEquals(0, model.getDeleteStatementCount(), "the count is reset to 0");
+    }
+
+    @Test
     public void _notify_increments() {
         model.notifySelectStatement();
         model.notifyInsertStatement();

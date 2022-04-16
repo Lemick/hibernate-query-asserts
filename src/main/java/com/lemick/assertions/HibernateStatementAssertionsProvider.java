@@ -25,8 +25,4 @@ public class HibernateStatementAssertionsProvider {
     public HibernateStatementAssertionResult generateDeleteStatementAssertion(int expectedDeleteStatementCount, Supplier<HibernateStatistics> statisticsSupplier) {
         return new HibernateStatementAssertionResult(DELETE, statisticsSupplier.get().getDeleteStatementCount(), expectedDeleteStatementCount);
     }
-
-    public void resetStatistics() {
-        HibernateStatementCountInspector.resetStatistics();
-    }
 }

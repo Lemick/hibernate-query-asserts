@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestContext;
 
@@ -43,16 +44,20 @@ class HibernateStatementCountTestListenerTest {
 
     @Test
     public void _beforeTestMethod_no_annotation() {
+        when(statisticsSupplier.get()).thenReturn(mock(HibernateStatistics.class));
+
         model.beforeTestMethod(testContext);
 
-        verify(hibernateStatementAssertUtils, description("the reset method is called")).resetStatistics();
+        verify(statisticsSupplier.get(), description("the reset method is called")).resetStatistics();
     }
 
     @Test
     public void _beforeTestMethod_with_annotation() {
+        when(statisticsSupplier.get()).thenReturn(mock(HibernateStatistics.class));
+
         model.beforeTestMethod(testContext);
 
-        verify(hibernateStatementAssertUtils, description("the reset method is called")).resetStatistics();
+        verify(statisticsSupplier.get(), description("the reset method is called")).resetStatistics();
     }
 
     @Test

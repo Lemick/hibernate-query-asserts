@@ -20,7 +20,7 @@ public class HibernateStatementCountTestListener implements TestExecutionListene
 
     @Override
     public void beforeTestMethod(TestContext testContext) {
-        hibernateStatementAssertionsProvider.resetStatistics();
+        statisticsSupplier.get().resetStatistics();
     }
 
     @Override

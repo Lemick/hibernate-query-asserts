@@ -25,13 +25,4 @@ class HibernateStatementCountInspectorTest {
         assertEquals("SELECT * FROM Post", actual, "output is the same as the input");
         verify(statementParser, description("parser is called")).parseSqlStatement("SELECT * FROM Post", HibernateStatementCountInspector.getStatistics());
     }
-
-    @Test
-    public void _resetStatistics() {
-        HibernateStatistics beforeStatistics = HibernateStatementCountInspector.getStatistics();
-
-        HibernateStatementCountInspector.resetStatistics();
-
-        assertNotSame(beforeStatistics, HibernateStatementCountInspector.getStatistics(), "the statistics has been recreated");
-    }
 }

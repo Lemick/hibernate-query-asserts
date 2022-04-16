@@ -14,11 +14,6 @@ public class HibernateStatementCountInspector implements StatementInspector {
         return sql;
     }
 
-    public static void resetStatistics() {
-        statisticsStore.remove();
-        statisticsStore.set(new HibernateStatistics());
-    }
-
     public static HibernateStatistics getStatistics() {
         return statisticsStore.get();
     }

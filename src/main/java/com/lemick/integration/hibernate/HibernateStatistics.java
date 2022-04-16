@@ -7,6 +7,13 @@ public class HibernateStatistics implements HibernateStatementCountListener{
     private int insertStatementCount = 0;
     private int deleteStatementCount = 0;
 
+    public void resetStatistics() {
+        selectStatementCount = 0;
+        updateStatementCount = 0;
+        insertStatementCount = 0;
+        deleteStatementCount = 0;
+    }
+
     @Override
     public void notifySelectStatement() {
         selectStatementCount++;
