@@ -1,25 +1,32 @@
 package com.lemick.assertions;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class HibernateStatementAssertionResult implements HibernateStatementAssertionValidator {
 
     public enum StatementType {SELECT, INSERT, UPDATE, DELETE}
 
     private StatementType type;
-    private int actual;
+    private List<String> statements;
     private int expected;
 
-    public HibernateStatementAssertionResult(StatementType type, int actual, int expected) {
+    public HibernateStatementAssertionResult(StatementType type, List<String> statements, int expected) {
         this.type = type;
-        this.actual = actual;
+        this.statements = statements;
         this.expected = expected;
     }
 
     public boolean isInError() {
-        return actual != expected;
+        return statements.size() != expected;
     }
 
     public String getErrorMessage() {
-        return "Expected " + expected + " " + type.name() + " but was " + actual;
+        String header = "Expected " + expected + " " + type.name() + " but got " + statements.size() + ":" + System.lineSeparator();
+        String statementsDetail = statements.stream()
+                .map(statement -> "     => '" + statement + "'")
+                .collect(Collectors.joining(System.lineSeparator()));
+        return header + statementsDetail;
     }
 
     @Override

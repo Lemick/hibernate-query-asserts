@@ -1,52 +1,56 @@
 package com.lemick.integration.hibernate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HibernateStatistics implements HibernateStatementCountListener{
 
-    private int selectStatementCount = 0;
-    private int updateStatementCount = 0;
-    private int insertStatementCount = 0;
-    private int deleteStatementCount = 0;
+    private final List<String> selectStatements = new ArrayList<>();
+    private final List<String> updateStatements = new ArrayList<>();
+    private final List<String> insertStatements = new ArrayList<>();
+    private final List<String> deleteStatements = new ArrayList<>();
 
     public void resetStatistics() {
-        selectStatementCount = 0;
-        updateStatementCount = 0;
-        insertStatementCount = 0;
-        deleteStatementCount = 0;
+        selectStatements.clear();
+        updateStatements.clear();
+        insertStatements.clear();
+        deleteStatements.clear();
+
     }
 
     @Override
-    public void notifySelectStatement() {
-        selectStatementCount++;
+    public void notifySelectStatement(String sql) {
+        selectStatements.add(sql);
     }
 
     @Override
-    public void notifyUpdateStatement() {
-        updateStatementCount++;
+    public void notifyUpdateStatement(String sql) {
+        updateStatements.add(sql);
     }
 
     @Override
-    public void notifyInsertStatement() {
-        insertStatementCount++;
+    public void notifyInsertStatement(String sql) {
+        insertStatements.add(sql);
     }
 
     @Override
-    public void notifyDeleteStatement() {
-        deleteStatementCount++;
+    public void notifyDeleteStatement(String sql) {
+        deleteStatements.add(sql);
     }
 
-    public int getSelectStatementCount() {
-        return selectStatementCount;
+    public List<String> getSelectStatements() {
+        return selectStatements;
     }
 
-    public int getUpdateStatementCount() {
-        return updateStatementCount;
+    public List<String> getUpdateStatements() {
+        return updateStatements;
     }
 
-    public int getInsertStatementCount() {
-        return insertStatementCount;
+    public List<String> getInsertStatements() {
+        return insertStatements;
     }
 
-    public int getDeleteStatementCount() {
-        return deleteStatementCount;
+    public List<String> getDeleteStatements() {
+        return deleteStatements;
     }
 }

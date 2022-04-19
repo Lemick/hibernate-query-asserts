@@ -2,8 +2,8 @@ package com.lemick.integration.spring;
 
 
 import com.lemick.api.AssertHibernateSQLStatementCount;
+import com.lemick.assertions.HibernateStatementAssertionResult;
 import com.lemick.assertions.HibernateStatementAssertionResults;
-import com.lemick.assertions.HibernateStatementAssertionsProvider;
 import com.lemick.integration.hibernate.HibernateStatementCountInspector;
 import com.lemick.integration.hibernate.HibernateStatistics;
 import jakarta.persistence.EntityManager;
@@ -15,9 +15,10 @@ import org.springframework.test.context.transaction.TestTransaction;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static com.lemick.assertions.HibernateStatementAssertionResult.StatementType.*;
+
 public class HibernateStatementCountTestListener implements TestExecutionListener, Ordered {
 
-    private HibernateStatementAssertionsProvider hibernateStatementAssertionsProvider = new HibernateStatementAssertionsProvider();
     private Supplier<HibernateStatistics> statisticsSupplier = HibernateStatementCountInspector::getStatistics;
     private Supplier<Boolean> transactionAvailabilitySupplier = TestTransaction::isActive;
 
@@ -57,10 +58,10 @@ public class HibernateStatementCountTestListener implements TestExecutionListene
 
     private void doStatementCountEvaluation(AssertHibernateSQLStatementCount annotation) {
         HibernateStatementAssertionResults assertionResults = new HibernateStatementAssertionResults(List.of(
-                hibernateStatementAssertionsProvider.generateSelectStatementAssertion(annotation.selects(), statisticsSupplier),
-                hibernateStatementAssertionsProvider.generateUpdateStatementAssertion(annotation.updates(), statisticsSupplier),
-                hibernateStatementAssertionsProvider.generateInsertStatementAssertion(annotation.inserts(), statisticsSupplier),
-                hibernateStatementAssertionsProvider.generateDeleteStatementAssertion(annotation.deletes(), statisticsSupplier)
+                new HibernateStatementAssertionResult(SELECT, statisticsSupplier.get().getSelectStatements(), annotation.selects()),
+                new HibernateStatementAssertionResult(UPDATE, statisticsSupplier.get().getUpdateStatements(), annotation.updates()),
+                new HibernateStatementAssertionResult(INSERT, statisticsSupplier.get().getInsertStatements(), annotation.inserts()),
+                new HibernateStatementAssertionResult(DELETE, statisticsSupplier.get().getDeleteStatements(), annotation.deletes())
         ));
         assertionResults.validate();
     }

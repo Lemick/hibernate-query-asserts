@@ -18,9 +18,9 @@ public class HibernateStatementAssertionResults implements HibernateStatementAss
                 .collect(Collectors.toList());
 
         if (assertionsInError.size() > 0) {
-            String errorMessages = assertionsInError.stream()
+            String errorMessages = System.lineSeparator() + assertionsInError.stream()
                     .map(HibernateStatementAssertionResult::getErrorMessage)
-                    .collect(Collectors.joining(System.lineSeparator()));
+                    .collect(Collectors.joining(System.lineSeparator() + System.lineSeparator()));
             throw new HibernateStatementCountException(errorMessages);
         }
     }

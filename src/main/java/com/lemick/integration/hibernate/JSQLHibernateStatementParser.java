@@ -18,22 +18,22 @@ public class JSQLHibernateStatementParser implements HibernateStatementParser {
             statement.accept(new StatementVisitorAdapter() {
                 @Override
                 public void visit(Select select) {
-                    statementCountListener.notifySelectStatement();
+                    statementCountListener.notifySelectStatement(sql);
                 }
 
                 @Override
                 public void visit(Insert insert) {
-                    statementCountListener.notifyInsertStatement();
+                    statementCountListener.notifyInsertStatement(sql);
                 }
 
                 @Override
                 public void visit(Update update) {
-                    statementCountListener.notifyUpdateStatement();
+                    statementCountListener.notifyUpdateStatement(sql);
                 }
 
                 @Override
                 public void visit(Delete delete) {
-                    statementCountListener.notifyDeleteStatement();
+                    statementCountListener.notifyDeleteStatement(sql);
                 }
             });
         } catch (JSQLParserException e) {
