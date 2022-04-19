@@ -1,4 +1,5 @@
-# Hibernate SQL query count assertions for Spring
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/Lemick/hibernate-spring-sql-query-count.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Lemick/hibernate-spring-sql-query-count/context:java)
+# Hibernate SQL Query Assertions for Spring
 
 Hibernate is a powerful ORM, but you need to have control over the executed SQL queries to avoid **huge performance problems** (N+1 selects, silent updates, batch insert not working...) 
 
