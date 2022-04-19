@@ -1,7 +1,6 @@
 package com.lemick.integration.spring;
 
-import com.lemick.api.AssertHibernateSQLStatementCount;
-import com.lemick.assertions.HibernateStatementAssertionResult;
+import com.lemick.api.AssertHibernateSQLCount;
 import com.lemick.integration.hibernate.HibernateStatistics;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ import static org.mockito.Mockito.*;
 class HibernateStatementCountTestListenerTest {
 
     public static class FakeClass {
-        @AssertHibernateSQLStatementCount
+        @AssertHibernateSQLCount
         public void annotatedMethod() {
 
         }

@@ -1,7 +1,7 @@
 package com.lemick.integration.spring;
 
 
-import com.lemick.api.AssertHibernateSQLStatementCount;
+import com.lemick.api.AssertHibernateSQLCount;
 import com.lemick.assertions.HibernateStatementAssertionResult;
 import com.lemick.assertions.HibernateStatementAssertionResults;
 import com.lemick.integration.hibernate.HibernateStatementCountInspector;
@@ -30,7 +30,7 @@ public class HibernateStatementCountTestListener implements TestExecutionListene
 
     @Override
     public void afterTestMethod(TestContext testContext) {
-        AssertHibernateSQLStatementCount annotation = testContext.getTestMethod().getAnnotation(AssertHibernateSQLStatementCount.class);
+        AssertHibernateSQLCount annotation = testContext.getTestMethod().getAnnotation(AssertHibernateSQLCount.class);
         if (annotation != null) {
             flushExistingPersistenceContext(testContext, transactionAvailabilitySupplier);
             doStatementCountEvaluation(annotation);
@@ -56,7 +56,7 @@ public class HibernateStatementCountTestListener implements TestExecutionListene
         }
     }
 
-    private void doStatementCountEvaluation(AssertHibernateSQLStatementCount annotation) {
+    private void doStatementCountEvaluation(AssertHibernateSQLCount annotation) {
         HibernateStatementAssertionResults assertionResults = new HibernateStatementAssertionResults(List.of(
                 new HibernateStatementAssertionResult(SELECT, statisticsSupplier.get().getSelectStatements(), annotation.selects()),
                 new HibernateStatementAssertionResult(UPDATE, statisticsSupplier.get().getUpdateStatements(), annotation.updates()),

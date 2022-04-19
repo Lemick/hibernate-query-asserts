@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AssertHibernateSQLStatementCount {
+public @interface AssertHibernateSQLCount {
 
     int selects() default 0;
 
