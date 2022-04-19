@@ -1,52 +1,43 @@
 # Hibernate SQL query count assertions for Spring
 
-Hibernate is a powerful ORM, but you need to have control over the executed SQL queries to avoid huge performance problems (N+1 selects, silent updates, batch insert not working, etc...)
+Hibernate is a powerful ORM, but you need to have control over the executed SQL queries to avoid **huge performance problems** (N+1 selects, silent updates, batch insert not working...) 
 
-You can enable SQL query logging, this is a great help in dev, but not in production. 
+You can enable SQL query logging, this is a great help in dev, but not in production. This tool helps you to count the **executed SQL queries by Hibernate in your integration tests**.
 
-This tool helps you to count the real executed queries by Hibernate in your integration tests.
+It consists of just an Hibernate SQL inspector service and a Spring Test Listener that controls it (no proxy around the Datasource).
 
-It consists of just an Hibernate SQL inspector service and a Spring Test Listener that controls it (no proxy around the Datasource)
+The assertion will work seamlessly whether you're testing Spring repositories or doing HTTP integration tests.
 
 ## Example
 
-* You just have to add the @AssertSQLStatementCount annotation to your test and it will verify the SQL statements count at the end of the test:
+* You just have to add the @AssertHibernateSQLCount annotation to your test and it will verify the SQL statements (SELECT, UPDATE, INSERT, DELETE) count at the end of the test :
 
 
         @Test
         @Transactional
-        @AssertSQLStatementCount(deletes = 1, inserts = 2)
-        void remove_one_entity_and_create_two() {
-            blogPostRepository.deleteById(1L);
-        
-            BlogPost post_2 = new BlogPost("Post title 2");
+        @AssertHibernateSQLCount(inserts = 6)
+        void create_two_blog_posts() {
+            BlogPost post_1 = new BlogPost("Blog post 1");
+            post_1.addComment(new PostComment("Good article"));
+            post_1.addComment(new PostComment("Very interesting"));
+            blogPostRepository.save(post_1);
+    
+            BlogPost post_2 = new BlogPost("Blog post 2");
+            post_2.addComment(new PostComment("Nice"));
+            post_2.addComment(new PostComment("So cool, thanks"));
             blogPostRepository.save(post_2);
-
-            BlogPost post_3 = new BlogPost("Post title 3");
-            blogPostRepository.save(post_3);
         }
 
-    If the actual count is different, an exception is thrown:
+    If the actual count is different, an exception is thrown with the executed statements:
     
         com.lemick.assertions.HibernateStatementCountException: 
-        Expected 2 INSERT but was 1
-        Expected 1 DELETE but was 0
-
-* You can also use the static methods in your test method, but it's more complex because Hibernate [will try to delay the flush](https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/chapters/flushing/Flushing.html) of your entities states at the end of your application transaction, here we call flush manually:
-
-        @Test
-        @Transactional
-        void create_two_entities() {
-            BlogPost post_1 = new BlogPost("Post title 1");
-            blogPostRepository.save(post_1);
-            entityManager.flush();
-            assertInsertStatementCount(1);
-    
-            BlogPost post_2 = new BlogPost("Post title 2");
-            blogPostRepository.save(post_2);
-            entityManager.flush();
-            assertInsertStatementCount(2);
-        }
+        Expected 5 INSERT but got 6:
+             => '/* insert com.lemick.testdatasourceproxy.entity.BlogPost */ insert into blog_post (id, title) values (default, ?)'
+             => '/* insert com.lemick.testdatasourceproxy.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
+             => '/* insert com.lemick.testdatasourceproxy.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
+             => '/* insert com.lemick.testdatasourceproxy.entity.BlogPost */ insert into blog_post (id, title) values (default, ?)'
+             => '/* insert com.lemick.testdatasourceproxy.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
+             => '/* insert com.lemick.testdatasourceproxy.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
     
 ## How to integrate
 1. Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
@@ -72,4 +63,3 @@ It consists of just an Hibernate SQL inspector service and a Spring Test Listene
     * **OR** by adding a **META-INF/spring.factories** file that contains the definition, that will register the listener for all your tests:
 
 	      org.springframework.test.context.TestExecutionListener=com.lemick.integration.spring.HibernateStatementCountTestListener
-
