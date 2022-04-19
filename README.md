@@ -33,12 +33,12 @@ The assertion will work seamlessly whether you're testing Spring repositories or
     
         com.lemick.assertions.HibernateStatementCountException: 
         Expected 5 INSERT but got 6:
-             => '/* insert com.lemick.testdatasourceproxy.entity.BlogPost */ insert into blog_post (id, title) values (default, ?)'
-             => '/* insert com.lemick.testdatasourceproxy.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
-             => '/* insert com.lemick.testdatasourceproxy.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
-             => '/* insert com.lemick.testdatasourceproxy.entity.BlogPost */ insert into blog_post (id, title) values (default, ?)'
-             => '/* insert com.lemick.testdatasourceproxy.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
-             => '/* insert com.lemick.testdatasourceproxy.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
+             => '/* insert com.lemick.demo.entity.BlogPost */ insert into blog_post (id, title) values (default, ?)'
+             => '/* insert com.lemick.demo.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
+             => '/* insert com.lemick.demo.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
+             => '/* insert com.lemick.demo.entity.BlogPost */ insert into blog_post (id, title) values (default, ?)'
+             => '/* insert com.lemick.demo.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
+             => '/* insert com.lemick.demo.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
     
 ## How to integrate
 1. Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
