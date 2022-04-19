@@ -4,8 +4,11 @@ import com.lemick.api.AssertHibernateSQLStatementCount;
 import com.lemick.assertions.HibernateStatementAssertionResult;
 import com.lemick.assertions.HibernateStatementAssertionsProvider;
 import com.lemick.integration.hibernate.HibernateStatistics;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -19,7 +22,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class HibernateStatementCountTestListenerTest {
 
-    public class FakeClass {
+    public static class FakeClass {
         @AssertHibernateSQLStatementCount(inserts = 1, deletes = 2, selects = 3, updates = 4)
         public void annotatedMethod() {
 
@@ -40,6 +43,9 @@ class HibernateStatementCountTestListenerTest {
     Supplier<HibernateStatistics> statisticsSupplier;
 
     @Mock
+    Supplier<Boolean> transactionAvailabilitySupplier;
+
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     TestContext testContext;
 
     @Test
@@ -61,7 +67,7 @@ class HibernateStatementCountTestListenerTest {
     }
 
     @Test
-    public void _afterTestMethod_no_annotation() throws NoSuchMethodException {
+    public void _afterTestMethod_without_annotation() throws NoSuchMethodException {
         when(testContext.getTestMethod()).thenReturn(FakeClass.class.getMethod("notAnnotatedMethod"));
 
         model.afterTestMethod(testContext);
@@ -73,8 +79,9 @@ class HibernateStatementCountTestListenerTest {
     }
 
     @Test
-    public void _afterTestMethod_with_annotation() throws NoSuchMethodException {
+    public void _afterTestMethod_with_annotation_without_transaction() throws NoSuchMethodException {
         when(testContext.getTestMethod()).thenReturn(FakeClass.class.getMethod("annotatedMethod"));
+        when(transactionAvailabilitySupplier.get()).thenReturn(false);
 
         HibernateStatementAssertionResult statementAssertionResult = mock(HibernateStatementAssertionResult.class);
         when(hibernateStatementAssertUtils.generateInsertStatementAssertion(anyInt(), any())).thenReturn(statementAssertionResult);
@@ -84,6 +91,29 @@ class HibernateStatementCountTestListenerTest {
 
         model.afterTestMethod(testContext);
 
+        verify(testContext, times(0).description("EntityManager is NOT flushed")).getApplicationContext();
+        verify(hibernateStatementAssertUtils, description("assert method is called")).generateSelectStatementAssertion(3, statisticsSupplier);
+        verify(hibernateStatementAssertUtils, description("assert method is called")).generateUpdateStatementAssertion(4, statisticsSupplier);
+        verify(hibernateStatementAssertUtils, description("assert method is called")).generateInsertStatementAssertion(1, statisticsSupplier);
+        verify(hibernateStatementAssertUtils, description("assert method is called")).generateDeleteStatementAssertion(2, statisticsSupplier);
+    }
+
+    @Test
+    public void _afterTestMethod_with_annotation_with_transaction() throws NoSuchMethodException {
+        EntityManager entityManager = mock(EntityManager.class);
+        when(testContext.getTestMethod()).thenReturn(FakeClass.class.getMethod("annotatedMethod"));
+        when(testContext.getApplicationContext().getAutowireCapableBeanFactory().getBean(EntityManager.class)).thenReturn(entityManager);
+        when(transactionAvailabilitySupplier.get()).thenReturn(true);
+
+        HibernateStatementAssertionResult statementAssertionResult = mock(HibernateStatementAssertionResult.class);
+        when(hibernateStatementAssertUtils.generateInsertStatementAssertion(anyInt(), any())).thenReturn(statementAssertionResult);
+        when(hibernateStatementAssertUtils.generateSelectStatementAssertion(anyInt(), any())).thenReturn(statementAssertionResult);
+        when(hibernateStatementAssertUtils.generateUpdateStatementAssertion(anyInt(), any())).thenReturn(statementAssertionResult);
+        when(hibernateStatementAssertUtils.generateDeleteStatementAssertion(anyInt(), any())).thenReturn(statementAssertionResult);
+
+        model.afterTestMethod(testContext);
+
+        verify(entityManager, description("EntityManager is flushed")).flush();
         verify(hibernateStatementAssertUtils, description("assert method is called")).generateSelectStatementAssertion(3, statisticsSupplier);
         verify(hibernateStatementAssertUtils, description("assert method is called")).generateUpdateStatementAssertion(4, statisticsSupplier);
         verify(hibernateStatementAssertUtils, description("assert method is called")).generateInsertStatementAssertion(1, statisticsSupplier);
