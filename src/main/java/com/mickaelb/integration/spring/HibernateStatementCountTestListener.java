@@ -1,11 +1,11 @@
-package com.lemick.integration.spring;
+package com.mickaelb.integration.spring;
 
 
-import com.lemick.api.AssertHibernateSQLCount;
-import com.lemick.assertions.HibernateStatementAssertionResult;
-import com.lemick.assertions.HibernateStatementAssertionResults;
-import com.lemick.integration.hibernate.HibernateStatementCountInspector;
-import com.lemick.integration.hibernate.HibernateStatistics;
+import com.mickaelb.api.AssertHibernateSQLCount;
+import com.mickaelb.assertions.HibernateStatementAssertionResult;
+import com.mickaelb.assertions.HibernateStatementAssertionResults;
+import com.mickaelb.integration.hibernate.HibernateStatementCountInspector;
+import com.mickaelb.integration.hibernate.HibernateStatistics;
 import jakarta.persistence.EntityManager;
 import org.springframework.core.Ordered;
 import org.springframework.test.context.TestContext;
@@ -15,7 +15,7 @@ import org.springframework.test.context.transaction.TestTransaction;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.lemick.assertions.HibernateStatementAssertionResult.StatementType.*;
+import static com.mickaelb.assertions.HibernateStatementAssertionResult.StatementType.*;
 
 public class HibernateStatementCountTestListener implements TestExecutionListener, Ordered {
 
@@ -40,7 +40,7 @@ public class HibernateStatementCountTestListener implements TestExecutionListene
 
     /**
      * Low precedence for executing before {@link org.springframework.test.context.transaction.TransactionalTestExecutionListener}
-     * closes the transaction and have the ability to flush the EntityManager
+     * closes the transaction and to have the ability to flush the EntityManager
      */
     @Override
     public int getOrder() {

@@ -1,4 +1,4 @@
-package com.lemick.integration.hibernate;
+package com.mickaelb.integration.hibernate;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;

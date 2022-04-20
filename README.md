@@ -31,7 +31,7 @@ The assertion will work seamlessly whether you're testing Spring repositories or
 
     If the actual count is different, an exception is thrown with the executed statements:
     
-        com.lemick.assertions.HibernateStatementCountException: 
+        com.mickaelb.assertions.HibernateStatementCountException: 
         Expected 5 INSERT but got 6:
              => '/* insert com.lemick.demo.entity.BlogPost */ insert into blog_post (id, title) values (default, ?)'
              => '/* insert com.lemick.demo.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
@@ -46,7 +46,7 @@ The assertion will work seamlessly whether you're testing Spring repositories or
         spring:
             jpa:
                 properties:
-                    hibernate.session_factory.statement_inspector: com.lemick.integration.hibernate.HibernateStatementCountInspector
+                    hibernate.session_factory.statement_inspector: com.mickaelb.integration.hibernate.HibernateStatementCountInspector
 
 2. Register the Spring TestListener that will launch the SQL inspection if the annotation is present:
 
@@ -63,4 +63,5 @@ The assertion will work seamlessly whether you're testing Spring repositories or
 	
     * **OR** by adding a **META-INF/spring.factories** file that contains the definition, that will register the listener for all your tests:
 
-	      org.springframework.test.context.TestExecutionListener=com.lemick.integration.spring.HibernateStatementCountTestListener
+	      org.springframework.test.context.TestExecutionListener=com.mickaelb.integration.spring.HibernateStatementCountTestListener
+

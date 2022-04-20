@@ -1,4 +1,4 @@
-package com.lemick.integration.hibernate;
+package com.mickaelb.integration.hibernate;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

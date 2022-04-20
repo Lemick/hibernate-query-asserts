@@ -1,4 +1,4 @@
-package com.lemick.assertions;
+package com.mickaelb.assertions;
 
 import java.util.List;
 import java.util.stream.Collectors;

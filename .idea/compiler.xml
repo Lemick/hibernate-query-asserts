@@ -6,13 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="hibernate-spring-test-sql-count" />
+        <module name="hibernate-query-asserts" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="hibernate-spring-test-sql-count" options="" />
+      <module name="hibernate-query-asserts" options="" />
     </option>
   </component>
 </project>

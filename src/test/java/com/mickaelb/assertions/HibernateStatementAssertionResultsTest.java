@@ -1,10 +1,10 @@
-package com.lemick.assertions;
+package com.mickaelb.assertions;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.lemick.assertions.HibernateStatementAssertionResult.StatementType.*;
+import static com.mickaelb.assertions.HibernateStatementAssertionResult.StatementType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateStatementAssertionResultsTest {

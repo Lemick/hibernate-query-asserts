@@ -1,4 +1,4 @@
-package com.lemick.assertions;
+package com.mickaelb.assertions;
 
 public interface HibernateStatementAssertionValidator {
     void validate();

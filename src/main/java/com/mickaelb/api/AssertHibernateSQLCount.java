@@ -1,4 +1,4 @@
-package com.lemick.api;
+package com.mickaelb.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

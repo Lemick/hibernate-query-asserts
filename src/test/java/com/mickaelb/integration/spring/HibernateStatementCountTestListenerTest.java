@@ -1,7 +1,7 @@
-package com.lemick.integration.spring;
+package com.mickaelb.integration.spring;
 
-import com.lemick.api.AssertHibernateSQLCount;
-import com.lemick.integration.hibernate.HibernateStatistics;
+import com.mickaelb.api.AssertHibernateSQLCount;
+import com.mickaelb.integration.hibernate.HibernateStatistics;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
