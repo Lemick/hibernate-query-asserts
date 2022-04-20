@@ -1,7 +1,7 @@
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/Lemick/hibernate-spring-sql-query-count.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Lemick/hibernate-spring-sql-query-count/context:java)
 # Hibernate SQL Query Assertions for Spring
 
-Hibernate is a powerful ORM, but you need to have control over the executed SQL queries to avoid **huge performance problems** (N+1 selects, silent updates, batch insert not working...) 
+Hibernate is a powerful ORM, but you need to have control over the executed SQL queries to avoid **huge performance problems** (N+1 selects, batch insert not working...) 
 
 You can enable SQL query logging, this is a great help in dev, but not in production. This tool helps you to count the **executed SQL queries by Hibernate in your integration tests**.
 
@@ -41,14 +41,22 @@ The assertion will work seamlessly whether you're testing Spring repositories or
              => '/* insert com.lemick.demo.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
     
 ## How to integrate
-1. Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
+1. Import the dependency
+
+        <dependency>
+                <groupId>com.mickaelb</groupId>
+                <artifactId>hibernate-query-asserts</artifactId>
+                <version>1.0.0</version>
+        </dependency>
+
+2. Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
 
         spring:
             jpa:
                 properties:
                     hibernate.session_factory.statement_inspector: com.mickaelb.integration.hibernate.HibernateStatementCountInspector
 
-2. Register the Spring TestListener that will launch the SQL inspection if the annotation is present:
+3. Register the Spring TestListener that will launch the SQL inspection if the annotation is present:
 
     * By adding the listener on each of your integration test: 
 
