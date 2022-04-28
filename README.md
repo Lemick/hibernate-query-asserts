@@ -3,15 +3,17 @@
 
 Hibernate is a powerful ORM, but you need to have control over the executed SQL queries to avoid **huge performance problems** (N+1 selects, batch insert not working...) 
 
-You can enable SQL query logging, this is a great help in dev, but not in production. This tool helps you to count the **executed SQL queries by Hibernate in your integration tests**.
+You can enable SQL query logging, this is a great help in dev, but not in production. This tool helps you to count the **executed SQL queries by Hibernate in your integration tests, it can assert L2C statistics too**.
 
 It consists of just an Hibernate SQL inspector service and a Spring Test Listener that controls it (no proxy around the Datasource).
 
 The assertion will work seamlessly whether you're testing Spring repositories or doing HTTP integration tests.
 
-## Example
+## Examples
 
-* You just have to add the @AssertHibernateSQLCount annotation to your test and it will verify the SQL statements (SELECT, UPDATE, INSERT, DELETE) count at the end of the test :
+### Assert SQL statements
+
+You just have to add the @AssertHibernateSQLCount annotation to your test and it will verify the SQL statements (SELECT, UPDATE, INSERT, DELETE) count at the end of the test :
 
 
         @Test
@@ -39,6 +41,27 @@ If the actual count is different, an exception is thrown with the executed state
              => '/* insert com.lemick.demo.entity.BlogPost */ insert into blog_post (id, title) values (default, ?)'
              => '/* insert com.lemick.demo.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
              => '/* insert com.lemick.demo.entity.PostComment */ insert into post_comment (id, blog_post_id, content) values (default, ?, ?)'
+
+### Assert L2C statistics
+
+It supports assertions on Hibernate level two cache statistics, for checking that your entities are cached correctly and that will stay forever:
+
+    @Test
+    @AssertHibernateL2CCount(misses = 1, puts = 1, hits = 1)
+    void _create_one_post_and_read_it() {
+        doInTransaction(() -> {
+            BlogPost post_1 = new BlogPost("Blog post 1");
+            blogPostRepository.save(post_1);
+        });
+
+        doInTransaction(() -> {
+            blogPostRepository.findById(1L); // 1 MISS + 1 PUT
+        });
+
+        doInTransaction(() -> {
+            blogPostRepository.findById(1L); // 1 HIT
+        });
+    }
     
 ## How to integrate
 1. Import the dependency
@@ -46,7 +69,7 @@ If the actual count is different, an exception is thrown with the executed state
         <dependency>
                 <groupId>com.mickaelb</groupId>
                 <artifactId>hibernate-query-asserts</artifactId>
-                <version>1.0.0</version>
+                <version>2.0.0</version>
         </dependency>
 
 2. Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
