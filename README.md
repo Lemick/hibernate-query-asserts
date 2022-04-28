@@ -44,7 +44,7 @@ If the actual count is different, an exception is thrown with the executed state
 
 ### Assert L2C statistics
 
-It supports assertions on Hibernate level two cache statistics, for checking that your entities are cached correctly and that will stay forever:
+It supports assertions on Hibernate level two cache statistics, useful for checking that your entities are cached correctly and that they will stay forever:
 
     @Test
     @AssertHibernateL2CCount(misses = 1, puts = 1, hits = 1)
