@@ -1,6 +1,6 @@
 package com.mickaelb.integration.hibernate;
 
-public interface HibernateStatementCountListener {
+public interface HibernateStatementListener {
 
     void notifySelectStatement(String sql);
     void notifyUpdateStatement(String sql);

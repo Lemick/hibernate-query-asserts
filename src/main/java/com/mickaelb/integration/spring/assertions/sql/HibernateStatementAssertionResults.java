@@ -1,4 +1,7 @@
-package com.mickaelb.assertions;
+package com.mickaelb.integration.spring.assertions.sql;
+
+import com.mickaelb.integration.spring.assertions.HibernateStatementAssertionValidator;
+import com.mickaelb.integration.spring.assertions.HibernateAssertCountException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,8 +10,8 @@ public class HibernateStatementAssertionResults implements HibernateStatementAss
 
     private final List<HibernateStatementAssertionResult> assertionResults;
 
-    public HibernateStatementAssertionResults(List<HibernateStatementAssertionResult> statementAssertionResults) {
-        this.assertionResults = statementAssertionResults;
+    public HibernateStatementAssertionResults(List<HibernateStatementAssertionResult> assertionResults) {
+        this.assertionResults = assertionResults;
     }
 
     @Override
@@ -21,7 +24,7 @@ public class HibernateStatementAssertionResults implements HibernateStatementAss
             String errorMessages = System.lineSeparator() + assertionsInError.stream()
                     .map(HibernateStatementAssertionResult::getErrorMessage)
                     .collect(Collectors.joining(System.lineSeparator() + System.lineSeparator()));
-            throw new HibernateStatementCountException(errorMessages);
+            throw new HibernateAssertCountException(errorMessages);
         }
     }
 }

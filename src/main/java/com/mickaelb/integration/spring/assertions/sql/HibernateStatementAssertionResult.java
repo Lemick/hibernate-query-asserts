@@ -1,4 +1,7 @@
-package com.mickaelb.assertions;
+package com.mickaelb.integration.spring.assertions.sql;
+
+import com.mickaelb.integration.spring.assertions.HibernateAssertCountException;
+import com.mickaelb.integration.spring.assertions.HibernateStatementAssertionValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +35,7 @@ public class HibernateStatementAssertionResult implements HibernateStatementAsse
     @Override
     public void validate() {
         if (this.isInError()) {
-            throw new HibernateStatementCountException(this.getErrorMessage());
+            throw new HibernateAssertCountException(this.getErrorMessage());
         }
     }
 }

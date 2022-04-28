@@ -3,7 +3,7 @@ package com.mickaelb.integration.hibernate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateStatistics implements HibernateStatementCountListener{
+public class HibernateStatementStatistics implements HibernateStatementListener {
 
     private final List<String> selectStatements = new ArrayList<>();
     private final List<String> updateStatements = new ArrayList<>();

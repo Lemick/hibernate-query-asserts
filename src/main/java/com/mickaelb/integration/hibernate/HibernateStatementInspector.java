@@ -6,9 +6,9 @@ import org.hibernate.resource.jdbc.spi.StatementInspector;
  * NOT Thread-Safe since it is meant to be used by Spring tests that are not multi-threaded
  * ThreadLocal does not work because a test can span on multiple threads (ex: a test executing a HTTP request on the server)
  */
-public class HibernateStatementCountInspector implements StatementInspector {
+public class HibernateStatementInspector implements StatementInspector {
 
-    private static final HibernateStatistics statistics = new HibernateStatistics();
+    private static final HibernateStatementStatistics statistics = new HibernateStatementStatistics();
 
     private HibernateStatementParser statementParser = new JSQLHibernateStatementParser();
 
@@ -18,7 +18,7 @@ public class HibernateStatementCountInspector implements StatementInspector {
         return sql;
     }
 
-    public static HibernateStatistics getStatistics() {
+    public static HibernateStatementStatistics getStatistics() {
         return statistics;
     }
 

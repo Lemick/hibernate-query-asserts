@@ -12,7 +12,7 @@ import net.sf.jsqlparser.statement.update.Update;
 public class JSQLHibernateStatementParser implements HibernateStatementParser {
 
     @Override
-    public void parseSqlStatement(String sql, HibernateStatementCountListener statementCountListener) {
+    public void parseSqlStatement(String sql, HibernateStatementListener statementCountListener) {
         try {
             Statement statement = CCJSqlParserUtil.parse(sql);
             statement.accept(new StatementVisitorAdapter() {

@@ -1,62 +1,59 @@
 package com.mickaelb.integration.spring;
 
-
 import com.mickaelb.api.AssertHibernateSQLCount;
-import com.mickaelb.assertions.HibernateStatementAssertionResult;
-import com.mickaelb.assertions.HibernateStatementAssertionResults;
-import com.mickaelb.integration.hibernate.HibernateStatementCountInspector;
-import com.mickaelb.integration.hibernate.HibernateStatistics;
+import com.mickaelb.integration.hibernate.HibernateStatementInspector;
+import com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult;
+import com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResults;
+import com.mickaelb.integration.hibernate.HibernateStatementStatistics;
 import jakarta.persistence.EntityManager;
-import org.springframework.core.Ordered;
 import org.springframework.test.context.TestContext;
-import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.transaction.TestTransaction;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.mickaelb.assertions.HibernateStatementAssertionResult.StatementType.*;
+import static com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult.StatementType.*;
+import static com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult.StatementType.DELETE;
 
-public class HibernateStatementCountTestListener implements TestExecutionListener, Ordered {
+public class HibernateSQLCountTestListener implements AssertTestListener{
 
-    private Supplier<HibernateStatistics> statisticsSupplier = HibernateStatementCountInspector::getStatistics;
+    private Supplier<HibernateStatementStatistics> statisticsSupplier = HibernateStatementInspector::getStatistics;
     private Supplier<Boolean> transactionAvailabilitySupplier = TestTransaction::isActive;
 
 
     @Override
+    public void beforeTestClass(TestContext testContext) {
+
+    }
+
+    @Override
     public void beforeTestMethod(TestContext testContext) {
-        statisticsSupplier.get().resetStatistics();
+        AssertHibernateSQLCount sqlCountAnnotation = testContext.getTestMethod().getAnnotation(AssertHibernateSQLCount.class);
+        if (sqlCountAnnotation != null) {
+            statisticsSupplier.get().resetStatistics();
+        }
     }
 
     @Override
     public void afterTestMethod(TestContext testContext) {
-        AssertHibernateSQLCount annotation = testContext.getTestMethod().getAnnotation(AssertHibernateSQLCount.class);
-        if (annotation != null) {
+        AssertHibernateSQLCount sqlCountAnnotation = testContext.getTestMethod().getAnnotation(AssertHibernateSQLCount.class);
+        if (sqlCountAnnotation != null) {
             flushExistingPersistenceContext(testContext, transactionAvailabilitySupplier);
-            doStatementCountEvaluation(annotation);
+            evaluateSQLStatementCount(sqlCountAnnotation);
         }
-    }
 
-
-    /**
-     * Low precedence for executing before {@link org.springframework.test.context.transaction.TransactionalTestExecutionListener}
-     * closes the transaction and to have the ability to flush the EntityManager
-     */
-    @Override
-    public int getOrder() {
-        return Ordered.LOWEST_PRECEDENCE;
     }
 
     private void flushExistingPersistenceContext(TestContext testContext, Supplier<Boolean> transactionAvailabilitySupplier) {
         if (transactionAvailabilitySupplier.get()) {
-            testContext.getApplicationContext()
+            EntityManager entityManager = testContext.getApplicationContext()
                     .getAutowireCapableBeanFactory()
-                    .getBean(EntityManager.class)
-                    .flush();
+                    .getBean(EntityManager.class);
+            entityManager.flush();
         }
     }
 
-    private void doStatementCountEvaluation(AssertHibernateSQLCount annotation) {
+    private void evaluateSQLStatementCount(AssertHibernateSQLCount annotation) {
         HibernateStatementAssertionResults assertionResults = new HibernateStatementAssertionResults(List.of(
                 new HibernateStatementAssertionResult(SELECT, statisticsSupplier.get().getSelectStatements(), annotation.selects()),
                 new HibernateStatementAssertionResult(UPDATE, statisticsSupplier.get().getUpdateStatements(), annotation.updates()),

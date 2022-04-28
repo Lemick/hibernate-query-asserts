@@ -16,33 +16,33 @@ class JSQLHibernateStatementParserTest {
     JSQLHibernateStatementParser model;
 
     @Mock
-    HibernateStatementCountListener hibernateStatementCountListener;
+    HibernateStatementListener hibernateStatementListener;
 
     @Test
     public void _parseSqlStatement_select() {
-        model.parseSqlStatement("SELECT * FROM Post", hibernateStatementCountListener);
+        model.parseSqlStatement("SELECT * FROM Post", hibernateStatementListener);
 
-        verify(hibernateStatementCountListener, description("the correct notifier is called")).notifySelectStatement("SELECT * FROM Post");
+        verify(hibernateStatementListener, description("the correct notifier is called")).notifySelectStatement("SELECT * FROM Post");
     }
 
     @Test
     public void _parseSqlStatement_update() {
-        model.parseSqlStatement("UPDATE Post p SET p.title = ?", hibernateStatementCountListener);
+        model.parseSqlStatement("UPDATE Post p SET p.title = ?", hibernateStatementListener);
 
-        verify(hibernateStatementCountListener, description("the correct notifier is called")).notifyUpdateStatement("UPDATE Post p SET p.title = ?");
+        verify(hibernateStatementListener, description("the correct notifier is called")).notifyUpdateStatement("UPDATE Post p SET p.title = ?");
     }
 
     @Test
     public void _parseSqlStatement_insert() {
-        model.parseSqlStatement("INSERT INTO Post VALUES (?)", hibernateStatementCountListener);
+        model.parseSqlStatement("INSERT INTO Post VALUES (?)", hibernateStatementListener);
 
-        verify(hibernateStatementCountListener, description("the correct notifier is called")).notifyInsertStatement("INSERT INTO Post VALUES (?)");
+        verify(hibernateStatementListener, description("the correct notifier is called")).notifyInsertStatement("INSERT INTO Post VALUES (?)");
     }
 
     @Test
     public void _parseSqlStatement_delete() {
-        model.parseSqlStatement("DELETE FROM Post", hibernateStatementCountListener);
+        model.parseSqlStatement("DELETE FROM Post", hibernateStatementListener);
 
-        verify(hibernateStatementCountListener, description("the correct notifier is called")).notifyDeleteStatement("DELETE FROM Post");
+        verify(hibernateStatementListener, description("the correct notifier is called")).notifyDeleteStatement("DELETE FROM Post");
     }
 }

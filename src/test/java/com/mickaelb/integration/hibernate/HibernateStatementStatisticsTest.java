@@ -8,10 +8,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class HibernateStatisticsTest {
+class HibernateStatementStatisticsTest {
 
     @InjectMocks
-    HibernateStatistics model;
+    HibernateStatementStatistics model;
 
     @Test
     public void _default_state() {

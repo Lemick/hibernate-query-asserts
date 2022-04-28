@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class HibernateStatementCountInspectorTest {
+class HibernateStatementInspectorTest {
 
     @InjectMocks
-    HibernateStatementCountInspector model;
+    HibernateStatementInspector model;
 
     @Mock
     HibernateStatementParser statementParser;
@@ -23,6 +23,6 @@ class HibernateStatementCountInspectorTest {
         String actual = model.inspect("SELECT * FROM Post");
 
         assertEquals("SELECT * FROM Post", actual, "output is the same as the input");
-        verify(statementParser, description("parser is called")).parseSqlStatement("SELECT * FROM Post", HibernateStatementCountInspector.getStatistics());
+        verify(statementParser, description("parser is called")).parseSqlStatement("SELECT * FROM Post", HibernateStatementInspector.getStatistics());
     }
 }

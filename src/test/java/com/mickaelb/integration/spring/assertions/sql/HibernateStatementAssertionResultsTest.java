@@ -1,10 +1,13 @@
-package com.mickaelb.assertions;
+package com.mickaelb.integration.spring.assertions.sql;
 
+import com.mickaelb.integration.spring.assertions.HibernateAssertCountException;
+import com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult;
+import com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResults;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.mickaelb.assertions.HibernateStatementAssertionResult.StatementType.*;
+import static com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult.StatementType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateStatementAssertionResultsTest {
@@ -27,7 +30,7 @@ class HibernateStatementAssertionResultsTest {
                 new HibernateStatementAssertionResult(UPDATE, List.of("UPDATE 1"), 2)
         ));
 
-        HibernateStatementCountException actual = assertThrows(HibernateStatementCountException.class, model::validate, "validation error is thrown");
+        HibernateAssertCountException actual = assertThrows(HibernateAssertCountException.class, model::validate, "validation error is thrown");
 
         String expected = EOL +
                 "Expected 2 SELECT but got 1:" + EOL +

@@ -1,10 +1,12 @@
-package com.mickaelb.assertions;
+package com.mickaelb.integration.spring.assertions.sql;
 
+import com.mickaelb.integration.spring.assertions.HibernateAssertCountException;
+import com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.mickaelb.assertions.HibernateStatementAssertionResult.StatementType.SELECT;
+import static com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult.StatementType.SELECT;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateStatementAssertionResultTest {
@@ -34,7 +36,7 @@ class HibernateStatementAssertionResultTest {
     public void _validate_throws() {
         HibernateStatementAssertionResult model = new HibernateStatementAssertionResult(SELECT, List.of("SELECT 1", "SELECT 2"), 1);
 
-        assertThrows(HibernateStatementCountException.class, model::validate);
+        assertThrows(HibernateAssertCountException.class, model::validate);
     }
 
     @Test

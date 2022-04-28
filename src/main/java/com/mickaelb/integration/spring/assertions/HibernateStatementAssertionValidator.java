@@ -1,4 +1,4 @@
-package com.mickaelb.assertions;
+package com.mickaelb.integration.spring.assertions;
 
 public interface HibernateStatementAssertionValidator {
     void validate();
