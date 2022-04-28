@@ -85,7 +85,7 @@ It supports assertions on Hibernate level two cache statistics, for checking tha
 
     	    @SpringBootTest
             @TestExecutionListeners(
-    	        listeners = HibernateStatementCountTestListener.class, 
+    	        listeners = HibernateAssertTestListener.class, 
     	        mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS
     	    )
     	    class MySpringIntegrationTest {
