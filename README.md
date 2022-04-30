@@ -5,7 +5,7 @@ Hibernate is a powerful ORM, but you need to have control over the executed SQL 
 
 You can enable SQL query logging, this is a great help in dev, but not in production. This tool helps you to count the **executed SQL queries by Hibernate in your integration tests, it can assert L2C statistics too**.
 
-It consists of just an Hibernate SQL inspector service and a Spring Test Listener that controls it (no proxy around the Datasource).
+It consists of just a Hibernate SQL inspector service and a Spring Test Listener that controls it (no proxy around the Datasource).
 
 The assertion will work seamlessly whether you're testing Spring repositories or doing HTTP integration tests.
 
