@@ -11,6 +11,8 @@ The assertion will work seamlessly whether you're testing Spring repositories or
 
 ## Examples
 
+A full-working demo of the examples below [is available here](https://github.com/Lemick/demo-hibernate-query-utils)
+
 ### Assert SQL statements
 
 You just have to add the @AssertHibernateSQLCount annotation to your test and it will verify the SQL statements (SELECT, UPDATE, INSERT, DELETE) count at the end of the test :
