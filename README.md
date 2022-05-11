@@ -50,7 +50,7 @@ It supports assertions on Hibernate level two cache statistics, useful for check
 
     @Test
     @AssertHibernateL2CCount(misses = 1, puts = 1, hits = 1)
-    void _create_one_post_and_read_it() {
+    void create_one_post_and_read_it() {
         doInTransaction(() -> {
             BlogPost post_1 = new BlogPost("Blog post 1");
             blogPostRepository.save(post_1);
