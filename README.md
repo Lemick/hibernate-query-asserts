@@ -12,7 +12,8 @@ The assertion will work seamlessly whether you're testing Spring repositories or
 ## Examples
 
 A full-working demo of the examples below [is available here](https://github.com/Lemick/demo-hibernate-query-utils)
-Tested with Hibernate 5 & 6 
+
+*Tested versions*: Hibernate 5 & 6 
 
 ### Assert SQL statements
 
