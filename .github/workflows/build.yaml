@@ -30,4 +30,4 @@ jobs:
           cache: maven
 
       - name: Build
-        run: ./mvnw clean install
+        run: chmod +x mvnw && ./mvnw clean install
