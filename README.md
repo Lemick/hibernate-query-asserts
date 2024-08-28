@@ -98,7 +98,7 @@ void create_one_post_and_read_it() {
     <dependency>
         <groupId>com.mickaelb</groupId>
         <artifactId>hibernate-query-asserts</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
     </dependency>
     ```
 2. Register the integration with Hibernate, you just need to add this key in your configuration (here for yml):
