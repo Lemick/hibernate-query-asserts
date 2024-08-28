@@ -12,26 +12,20 @@ import org.springframework.test.context.transaction.TestTransaction;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult.StatementType.*;
-import static com.mickaelb.integration.spring.assertions.sql.HibernateStatementAssertionResult.StatementType.DELETE;
+import static com.mickaelb.api.StatementType.*;
 
 public class HibernateSQLCountTestListener implements AssertTestListener{
 
     private Supplier<HibernateStatementStatistics> statisticsSupplier = HibernateStatementInspector::getStatistics;
     private Supplier<Boolean> transactionAvailabilitySupplier = TestTransaction::isActive;
 
-
     @Override
     public void beforeTestClass(TestContext testContext) {
-
     }
 
     @Override
     public void beforeTestMethod(TestContext testContext) {
-        AssertHibernateSQLCount sqlCountAnnotation = testContext.getTestMethod().getAnnotation(AssertHibernateSQLCount.class);
-        if (sqlCountAnnotation != null) {
-            statisticsSupplier.get().resetStatistics();
-        }
+        statisticsSupplier.get().resetStatistics();
     }
 
     @Override
@@ -41,7 +35,6 @@ public class HibernateSQLCountTestListener implements AssertTestListener{
             flushExistingPersistenceContext(testContext, transactionAvailabilitySupplier);
             evaluateSQLStatementCount(sqlCountAnnotation);
         }
-
     }
 
     private void flushExistingPersistenceContext(TestContext testContext, Supplier<Boolean> transactionAvailabilitySupplier) {

@@ -1,5 +1,6 @@
 package com.mickaelb.integration.spring.assertions.sql;
 
+import com.mickaelb.api.StatementType;
 import com.mickaelb.integration.spring.assertions.HibernateAssertCountException;
 import com.mickaelb.integration.spring.assertions.HibernateStatementAssertionValidator;
 
@@ -7,8 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HibernateStatementAssertionResult implements HibernateStatementAssertionValidator {
-
-    public enum StatementType {SELECT, INSERT, UPDATE, DELETE}
 
     private StatementType type;
     private List<String> statements;

@@ -43,18 +43,16 @@ class HibernateSQLCountTestListenerTest {
     TestContext testContext;
 
     @Test
-    public void _beforeTestMethod_no_annotation() throws NoSuchMethodException {
-        when(testContext.getTestMethod()).thenReturn(HibernateSQLCountTestListenerTest.FakeClass.class.getMethod("notAnnotatedMethod"));
+    public void _beforeTestMethod_no_annotation() {
         when(statisticsSupplier.get()).thenReturn(mock(HibernateStatementStatistics.class));
 
         model.beforeTestMethod(testContext);
 
-        verify(statisticsSupplier.get(), times(0).description("the reset method is NOT called")).resetStatistics();
+        verify(statisticsSupplier.get(), description("the reset method is called")).resetStatistics();
     }
 
     @Test
-    public void _beforeTestMethod_with_annotation() throws NoSuchMethodException {
-        when(testContext.getTestMethod()).thenReturn(HibernateSQLCountTestListenerTest.FakeClass.class.getMethod("annotatedMethod"));
+    public void _beforeTestMethod_with_annotation() {
         when(statisticsSupplier.get()).thenReturn(mock(HibernateStatementStatistics.class));
 
         model.beforeTestMethod(testContext);

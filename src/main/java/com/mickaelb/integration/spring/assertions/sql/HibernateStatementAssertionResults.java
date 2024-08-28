@@ -20,7 +20,7 @@ public class HibernateStatementAssertionResults implements HibernateStatementAss
                 .filter(HibernateStatementAssertionResult::isInError)
                 .collect(Collectors.toList());
 
-        if (assertionsInError.size() > 0) {
+        if (!assertionsInError.isEmpty()) {
             String errorMessages = System.lineSeparator() + assertionsInError.stream()
                     .map(HibernateStatementAssertionResult::getErrorMessage)
                     .collect(Collectors.joining(System.lineSeparator() + System.lineSeparator()));

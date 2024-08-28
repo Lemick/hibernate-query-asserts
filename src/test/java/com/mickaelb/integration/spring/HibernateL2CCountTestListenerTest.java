@@ -46,23 +46,19 @@ class HibernateL2CCountTestListenerTest {
         model.beforeTestClass(testContext);
 
         assertSame(statistics, model.getSessionFactoryStatistics(), "the statistics object is set");
-        verify(statistics, description("statistics is explicitely enabled during initialization")).setStatisticsEnabled(true);
+        verify(statistics, description("statistics is explicitly enabled during initialization")).setStatisticsEnabled(true);
 
     }
 
     @Test
-    public void _beforeTestMethod_no_annotation() throws NoSuchMethodException {
-        when(testContext.getTestMethod()).thenReturn(HibernateL2CCountTestListenerTest.FakeClass.class.getMethod("notAnnotatedMethod"));
-
+    public void _beforeTestMethod_no_annotation() {
         model.beforeTestMethod(testContext);
 
-        verify(statistics, times(0).description("the statistics are NOT cleared")).clear();
+        verify(statistics, description("the statistics are cleared")).clear();
     }
 
     @Test
-    public void _beforeTestMethod_with_annotation() throws NoSuchMethodException {
-        when(testContext.getTestMethod()).thenReturn(HibernateL2CCountTestListenerTest.FakeClass.class.getMethod("annotatedMethod"));
-
+    public void _beforeTestMethod_with_annotation() {
         model.beforeTestMethod(testContext);
 
         verify(statistics, description("the statistics are cleared")).clear();

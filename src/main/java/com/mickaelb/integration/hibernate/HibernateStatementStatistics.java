@@ -15,7 +15,6 @@ public class HibernateStatementStatistics implements HibernateStatementListener 
         updateStatements.clear();
         insertStatements.clear();
         deleteStatements.clear();
-
     }
 
     @Override
@@ -39,18 +38,18 @@ public class HibernateStatementStatistics implements HibernateStatementListener 
     }
 
     public List<String> getSelectStatements() {
-        return selectStatements;
+        return new ArrayList<>(selectStatements);
     }
 
     public List<String> getUpdateStatements() {
-        return updateStatements;
+        return new ArrayList<>(updateStatements);
     }
 
     public List<String> getInsertStatements() {
-        return insertStatements;
+        return new ArrayList<>(insertStatements);
     }
 
     public List<String> getDeleteStatements() {
-        return deleteStatements;
+        return new ArrayList<>(deleteStatements) ;
     }
 }

@@ -27,10 +27,7 @@ public class HibernateL2CCountTestListener implements AssertTestListener {
 
     @Override
     public void beforeTestMethod(TestContext testContext) {
-        AssertHibernateL2CCount l2cCountAnnotation = testContext.getTestMethod().getAnnotation(AssertHibernateL2CCount.class);
-        if (l2cCountAnnotation != null) {
-            sessionFactoryStatistics.clear();
-        }
+        sessionFactoryStatistics.clear();
     }
 
     @Override
