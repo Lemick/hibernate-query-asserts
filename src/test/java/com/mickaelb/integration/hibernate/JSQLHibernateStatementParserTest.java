@@ -6,8 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.description;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class JSQLHibernateStatementParserTest {
@@ -44,5 +43,12 @@ class JSQLHibernateStatementParserTest {
         model.parseSqlStatement("DELETE FROM Post", hibernateStatementListener);
 
         verify(hibernateStatementListener, description("the correct notifier is called")).notifyDeleteStatement("DELETE FROM Post");
+    }
+
+    @Test
+    public void _incorrect_statement_should_not_throw() {
+        model.parseSqlStatement("This is not really SQL", hibernateStatementListener);
+
+        verifyNoInteractions(hibernateStatementListener);
     }
 }
